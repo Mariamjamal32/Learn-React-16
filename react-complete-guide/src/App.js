@@ -1,20 +1,18 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person'
+import UserOutput from './UserOutput/UserOutput';
+import UserInput from './UserInput/UserInput';
 
 class App extends Component {
   state = {
     persons: [
-      {
-        name: "Max",
-        age: 28
-      },
-      {
-        name: "Manu",
-        age: 26
-      }
+      {name: "Max", age: 28},
+      {name: "Manu", age: 26},
+      {name: "Stephanie", age:32}
     ],
-    otherState: "other state"
+    otherState: "other state",
+    showPersons: false
   }
 
   switchNameHandler = (newName) => {
@@ -49,6 +47,14 @@ class App extends Component {
     })
   }
 
+  //This syntax ensures that the this keyword used inside method always points to the class instance.
+  togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({
+      showPersons: !doesShow
+    })
+  }
+
   render() {
     const style ={
       font : 'inherit',
@@ -61,17 +67,30 @@ class App extends Component {
       <div className="App">
         <h1>Hi, I am a react App! </h1>
         <p>It is really working!! </p>
+
         <button style={style} 
-          onClick={this.switchNameHandler.bind(this, 'Maximillian')}>Switch Name</button>
-        <Person
-          changed={this.nameChangedHandler}
-          click={this.switchNameHandler.bind(this, 'Maxi!!!')}
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}/>
-        <Person 
-          name={this.state.persons[0].name} 
-          age={this.state.persons[0].age}> I am a girl. </Person>
+          onClick={this.togglePersonsHandler}>Toggle Person List</button>
+
+        { this.state.showPersons ? 
+          <div>
+            <Person
+              changed={this.nameChangedHandler}
+              click={this.switchNameHandler.bind(this, 'Maxi!!!')}
+              name={this.state.persons[1].name}
+              age={this.state.persons[1].age}/>
+
+            <Person 
+              name={this.state.persons[0].name} 
+              age={this.state.persons[0].age}> I am a girl. </Person>
+
+            <Person 
+              name={this.state.persons[2].name} 
+              age={this.state.persons[2].age}>
+            </Person>
+          </div> : null
+        }
         
+
       </div>
     );
   }
